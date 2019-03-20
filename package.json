@@ -4,5 +4,15 @@
   "main": "index.js",
   "repository": "https://github.com/ageebc137/react-weather-app",
   "author": "Allister <ageebernal@aol.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "concurrently": "^4.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4"
+  }
 }
