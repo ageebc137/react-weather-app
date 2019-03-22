@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
+import City from './components/City';
+import Temperature from './components/Temperature';
+import Input from './components/Input';
 
 class App extends Component {
   constructor(props) {
@@ -8,83 +10,95 @@ class App extends Component {
     this.state = {
       query: "",
       city: "San Lorenzo",
-      temperature: 50,
+      description: '',
+      temperature: 0,
+      kTemperature: 0,
       lat: 0,
-      lng: 0
+      lng: 0,
+      message: "",
+      tempUnit: 'Fahrenheit'
     }
+
     this.handleInputLocation = this.handleInputLocation.bind(this);
     this.handleSubmitButton = this.handleSubmitButton.bind(this);
-    
+    this.handleChangeTempUnit = this.handleChangeTempUnit.bind(this);
+
   }
-  handleInputLocation = (city) => {
+  handleInputLocation = (location) => {
     this.setState({
-      query: city
+      query: location
     });
   }
+  toFahrenheit = (temp) => {
+    return parseInt((temp - 273.15)*1.8 + 32);
+  }
+
+  handleChangeTempUnit() {
+    if (this.state.tempUnit === 'Fahrenheit') {
+      this.setState({
+        temperature: `${this.toCelsius(this.state.kTemperature)}` ,
+        tempUnit: 'Celsius'
+      });
+    } else if (this.state.tempUnit === 'Celsius') {
+      this.setState({
+        temperature: `${this.toFahrenheit(this.state.kTemperature)}`,
+        tempUnit: 'Fahrenheit'
+      });
+    };
+  }
+
+  toCelsius = (temp) => {
+     return parseInt(temp - 273.15);
+  }
+
   handleSubmitButton = () => {
     const location = this.state.query;
-    console.log(location);
+
     axios.post('http://localhost:5000/getweather', {location})
           .then((res) => {
-            console.log(res);
+            let temperature;
+            if (this.state.tempUnit === 'Fahrenheit') {
+               temperature = this.toFahrenheit(res.data.weatherData.main.temp);
+            }else if (this.state.tempUnit === 'Celsius') {
+              temperature = this.toCelsius(res.data.weatherData.main.temp);
+            }
+            
+            const description = res.data.weatherData.weather[0].description;
+            this.setState({
+              message: '',
+              city: res.data.city,
+              temperature,
+              kTemperature: res.data.weatherData.main.temp,
+              description
+            });
+            console.log(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+            this.setState({
+              message: 'Could not find city. Please enter another location'
+            })
           });
   }
   render() {
     return (
       <div className="App">
         {this.state.city && <City city={this.state.city}/>} 
-        <Temperature temperature={this.state.temperature} />
-        <Input handleInputLocation={this.handleInputLocation} handleSubmitButton={this.handleSubmitButton} />
+        <Temperature 
+          description={this.state.description} 
+          temperature={this.state.temperature} 
+          tempUnit={this.state.tempUnit}
+        />
+        <Input 
+          message={this.state.message} 
+          handleInputLocation={this.handleInputLocation}
+          handleSubmitButton={this.handleSubmitButton}
+          handleChangeTempUnit={this.handleChangeTempUnit} 
+        />
       </div>
     );
   }
 }
-
-class City extends Component {
-  render() {
-    return (
-      <div>
-        <h3>{this.props.city}</h3>
-      </div>
-    );
-  }
-}
-
-class Temperature extends Component {
-  render() {
-    return (
-      <div>
-        <h1>{this.props.temperature}</h1>
-      </div>
-    );
-  }
-}
-
-class Input extends Component {
-
-  render() {
-    const handleInputLocation = (e) => {
-      e.preventDefault();
-      this.props.handleInputLocation(e.target.value);
-    };
-
-    const handleSubmitButton = (e) => {
-      e.preventDefault();
-      this.props.handleSubmitButton();
-    }
-
-    return (
-      <div>
-        <form>
-          <input onChange={handleInputLocation} placeholder="Enter city"></input>
-          <button onClick={handleSubmitButton} type="submit">Search</button>
-        </form>
-      </div>
-    )
-  }
-};
-
-
 
 
 export default App;

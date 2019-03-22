@@ -17,12 +17,26 @@ app.use(cors());
 app.use(bodyParser.json()); 
 
 app.post('/getweather', ( req, res) => {
-  const location = req.body.location;
 
-  const apiURL = `http://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${process.env.OPENWEATHER_API}`;
+  let city; 
+  const location = req.body.location, regex = /[0-9]/;
+  const apiQuery = location.match(regex) ? `postalCode=${location}` : `locality=${encodeURIComponent(location)}`;
 
+  const apiURL = `http://dev.virtualearth.net/REST/v1/Locations?${apiQuery}&maxResults=1&key=${process.env.BING_API_KEY}`;
+  
+  // Gets the locality of the zipCode or city name
   axios.get(apiURL).then((response) => {
-    res.send(response.data)
+    city = response.data.resourceSets[0].resources[0].address.locality;
+    const weatherURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.OPENWEATHER_API}`;
+
+    return axios.get(weatherURL);
+  })
+  .then((response) => {
+    let weatherData = response.data;
+    res.send({weatherData, city});
+  })
+  .catch((err) => {
+    res.sendStatus(404);
   });
 
 });
