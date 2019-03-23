@@ -31,10 +31,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // build mode
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/public/index.html'));
-});
-
 app.post('/getweather', ( req, res) => {
 
   let city; 
@@ -58,6 +54,10 @@ app.post('/getweather', ( req, res) => {
     res.sendStatus(404);
   });
 
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/public/index.html'));
 });
 
 app.listen(port, () => console.log(`App is listening on port ${port}`));

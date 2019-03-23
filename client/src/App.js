@@ -54,7 +54,7 @@ class App extends Component {
   handleSubmitButton = () => {
     const location = this.state.query;
 
-    axios.post('https://blooming-fortress-19253.herokuapp.com/getweather', {location})
+    axios.post('/getweather', {location})
           .then((res) => {
             let temperature;
             if (this.state.tempUnit === 'Fahrenheit') {
