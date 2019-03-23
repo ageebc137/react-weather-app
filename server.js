@@ -22,9 +22,8 @@ app.use(bodyParser.json());
 // Static file declaration
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-
 // build mode
-app.post('/getweather', ( req, res) => {
+app.post('/api/getweather', ( req, res) => {
 
   let city; 
   const location = req.body.location, regex = /[0-9]/;
@@ -52,7 +51,7 @@ app.post('/getweather', ( req, res) => {
 
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/public/index.html'));
+  res.sendFile(path.join(__dirname +'/client/public/index.html'));
 });
 
 app.listen(port, () => console.log(`App is listening on port ${port}`));

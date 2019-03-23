@@ -54,7 +54,7 @@ class App extends Component {
   handleSubmitButton = () => {
     const location = this.state.query;
 
-    axios.post('/getweather', {location})
+    axios.post('/api/getweather', {location})
           .then((res) => {
             let temperature;
             if (this.state.tempUnit === 'Fahrenheit') {
