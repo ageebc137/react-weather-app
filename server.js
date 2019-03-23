@@ -2,7 +2,7 @@ require('dotenv').config();
 
 // requiring packages
 const express = require('express');
-// const cors = require('cors');
+const cors = require('cors');
 const axios = require('axios');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -12,10 +12,8 @@ const app = express();
 
 const port = process.env.PORT || 5000;
 
-
-
 // Use cors() in order to achieve cross origin access with React client.
-// app.use(cors());
+app.use(cors());
 //bodyParser allows requests made to server API to convert data to json
 app.use(bodyParser.json()); 
 
@@ -47,8 +45,6 @@ app.post('/api/getweather', ( req, res) => {
   });
 
 });
-
-
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname +'/client/public/index.html'));
