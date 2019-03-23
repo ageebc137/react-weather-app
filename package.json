@@ -6,7 +6,7 @@
   "author": "Allister <ageebernal@aol.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node server.js",
+    "start": "node server.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
