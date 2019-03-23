@@ -1,0 +1,21 @@
+form {
+    display: flex;
+    justify-content: center;
+}
+
+input {
+    background: black;
+    border: none;
+    color: $font-color;
+    outline: none;
+    border-radius: 2.4px;
+}
+
+button {
+    outline: none;
+    border: none;
+    background: $font-color;
+    color: $background-color;
+    border-radius: 2.4px;
+    
+}

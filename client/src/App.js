@@ -10,7 +10,7 @@ class App extends Component {
     this.state = {
       query: "",
       city: "San Lorenzo",
-      description: '',
+      description: 'something cloudy',
       temperature: 0,
       kTemperature: 0,
       lat: 0,
@@ -88,12 +88,12 @@ class App extends Component {
           description={this.state.description} 
           temperature={this.state.temperature} 
           tempUnit={this.state.tempUnit}
+          handleChangeTempUnit={this.handleChangeTempUnit} 
         />
         <Input 
           message={this.state.message} 
           handleInputLocation={this.handleInputLocation}
           handleSubmitButton={this.handleSubmitButton}
-          handleChangeTempUnit={this.handleChangeTempUnit} 
         />
       </div>
     );

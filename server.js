@@ -5,16 +5,35 @@ const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 // Requesting express app 
 const app = express();
 
 const port = process.env.PORT || 5000;
 
+
+
 // Use cors() in order to achieve cross origin access with React client.
 app.use(cors());
 //bodyParser allows requests made to server API to convert data to json
 app.use(bodyParser.json()); 
+
+// Static file declaration
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+// production mode
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client/build')));
+  app.get('*', (req, res) => {
+    res.sendfile(path.join(__dirname+'/client/public/index.html'));
+  });
+}
+
+// build mode
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/public/index.html'));
+});
 
 app.post('/getweather', ( req, res) => {
 

@@ -5,8 +5,8 @@ class Temperature extends Component {
       return (
         <div>
           <p>{this.props.description}</p>
-          <h1>{this.props.temperature}&deg;{this.props.tempUnit === 'Fahrenheit' ? 'F': 'C'}</h1>
-          <img src="../images/sun.png" alt="sun" />
+          <h1 onClick={this.props.handleChangeTempUnit}>{this.props.temperature}&deg;{this.props.tempUnit === 'Fahrenheit' ? 'F': 'C'}</h1>
+          <canvas id="weather-icon" data-description={this.props.description}></canvas>
         </div>
       );
     }

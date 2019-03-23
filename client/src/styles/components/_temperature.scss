@@ -2,7 +2,13 @@ h1 {
 
 font-size: 5em;
 margin: 0;
+transition: color 0.5s;
 
+}
+
+h1:hover{
+    color: blue;
+    cursor: pointer;
 }
 
 h3 {
