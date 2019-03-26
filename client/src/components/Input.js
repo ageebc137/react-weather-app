@@ -11,6 +11,7 @@ class Input extends Component {
       const handleSubmitButton = (e) => {
         e.preventDefault();
         this.props.handleSubmitButton();
+        document.querySelector('input').value = '';
       }
   
       return (
