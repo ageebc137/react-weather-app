@@ -21,6 +21,31 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 // build mode
+app.post('/api/getGeoLocation', (req, res) => {
+    let city;
+    const coords = `${req.body.lat},${req.body.lng}`;
+    const apiURL = `http://dev.virtualearth.net/REST/v1/Locations/${coords}?key=${process.env.BING_API_KEY}`;
+    axios.get(apiURL).then((response) => {
+
+      const postalCode = response.data.resourceSets[0].resources[0].address.postalCode;
+      const cityURL = `http://dev.virtualearth.net/REST/v1/Locations?postalCode=${postalCode}&maxResults=1&key=${process.env.BING_API_KEY}`;
+      return axios.get(cityURL);
+    })
+    .then((response) => {
+      city = response.data.resourceSets[0].resources[0].address.locality;
+      const weatherURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.OPENWEATHER_API}`;
+      console.log(weatherURL);
+      return axios.get(weatherURL);
+    })
+    .then((response) => {
+      let weatherData = response.data;
+      res.send({weatherData, city});
+    }) 
+    .catch((err) => {
+      res.sendStatus(404);
+    });
+});
+
 app.post('/api/getweather', ( req, res) => {
 
   let city; 

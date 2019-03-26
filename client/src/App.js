@@ -22,7 +22,49 @@ class App extends Component {
     this.handleInputLocation = this.handleInputLocation.bind(this);
     this.handleSubmitButton = this.handleSubmitButton.bind(this);
     this.handleChangeTempUnit = this.handleChangeTempUnit.bind(this);
+    this.getCurrentLocationWeather = this.getCurrentLocationWeather.bind(this);
 
+  }
+  componentDidMount = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+  
+        this.getCurrentLocationWeather(pos.coords);
+      }, (err) => {
+        console.warn(err);
+      });
+    };
+    
+   
+  }
+
+  getCurrentLocationWeather = (coords) => {
+   
+    axios.post('/api/getGeoLocation', {lat: coords.latitude, lng: coords.longitude})
+    .then((res) => {
+      let temperature;
+      if (this.state.tempUnit === 'Fahrenheit') {
+         temperature = this.toFahrenheit(res.data.weatherData.main.temp);
+      }else if (this.state.tempUnit === 'Celsius') {
+        temperature = this.toCelsius(res.data.weatherData.main.temp);
+      }
+      
+      const description = res.data.weatherData.weather[0].description;
+      this.setState({
+        message: '',
+        city: res.data.city,
+        temperature,
+        kTemperature: res.data.weatherData.main.temp,
+        description
+      });
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+      this.setState({
+        message: 'Could not find city. Please enter another location'
+      })
+    });
   }
   handleInputLocation = (location) => {
     this.setState({
