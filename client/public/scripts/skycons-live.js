@@ -1,4 +1,4 @@
-var skycons = new Skycons({"color": "#E5E5E5"});
+var skycons = new Skycons({"color": "#FF00D4"});
 // on Android, a nasty hack is needed: {"resizeClear": true}
 
 let currentState = 'sunny';
