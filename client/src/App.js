@@ -9,10 +9,10 @@ class App extends Component {
     super(props);
     this.state = {
       query: "",
-      city: "San Lorenzo",
-      description: 'something cloudy',
-      temperature: 0,
-      kTemperature: 0,
+      city: "",
+      description: '',
+      temperature: null,
+      kTemperature: null,
       lat: 0,
       lng: 0,
       message: "",
