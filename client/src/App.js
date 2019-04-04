@@ -9,8 +9,8 @@ class App extends Component {
     super(props);
     this.state = {
       query: "",
-      city: "",
-      description: '',
+      city: "Weather App",
+      description: 'Powered by OpenWeatherMap and Bing',
       temperature: null,
       kTemperature: null,
       lat: 0,
